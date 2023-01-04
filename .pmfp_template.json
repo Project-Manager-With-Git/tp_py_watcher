@@ -1,0 +1,102 @@
+{
+    "language": "py",
+    "env": "venv",
+    "description": "用于监听kafka消息的流应用模板,使用streamz,同时提供了用于测试的confluent-kafka的生产者应用",
+    "author": "hsz",
+    "template_type": "watcher",
+    "requires": [
+        "pyproxypattern >= 0.0.1",
+        "schema_entry >= 0.1.5",
+        "pyloggerhelper >= 0.0.3",
+        "confluent-kafka >= 1.6.1",
+        "pandas >= 1.2.4",
+        "streamz >= 0.6.2",
+        "etcdproxy >= 0.0.1",
+        "watchdog >= 2.1.5"
+    ],
+    "test_requires": [
+        "coverage >= 5.5",
+        "mypy >= 0.800",
+        "autopep8 >= 1.5.6",
+        "pylint >= 2.8.0",
+        "pydocstyle>=6.0.0"
+    ],
+    "template_keys": {
+        "app_name": {
+            "description": "项目名",
+            "default": "{{ project_name }}"
+        }
+    },
+    "components": {
+        "eventfs_watcher_app": {
+            "source": "eventfs/watcher/app.py.jinja",
+            "description": "用于构造监听器应用的文件",
+            "default_path": "{{ project_name }}/app.py"
+        },
+        "eventfs_watcher_event_handdler": {
+            "source": "eventfs/watcher/event_handdler.py.jinja",
+            "description": "watchdog的使用模板,可以单独使用",
+            "default_path": "{{ project_name }}/event_handdler.py"
+        },
+        "etcd_watcher_app": {
+            "source": "etcd3/watcher/app.py.jinja",
+            "description": "监听应用主体",
+            "default_path": "{{ project_name }}/app.py"
+        },
+        "etcd_watcher_handler": {
+            "source": "etcd3/watcher/handler.py.jinja",
+            "description": "监听应用主体",
+            "default_path": "{{ project_name }}/handler.py"
+        },
+        "etcd_sender_app": {
+            "source": "etcd3/sender/app.py.jinja",
+            "description": "发送端应用主体",
+            "default_path": "{{ project_name }}_sender/app.py"
+        },
+        "etcd_sender": {
+            "source": "etcd3/sender/sender.py.jinja",
+            "description": "发送端应用主体",
+            "default_path": "{{ project_name }}_sender/sender.py"
+        },
+        "streamz_kafka_watcher_app": {
+            "source": "streamz_kafka/watcher/app.py.jinja",
+            "description": "监听应用主体",
+            "default_path": "{{ project_name }}/app.py"
+        },
+        "streamz_kafka_watcher": {
+            "source": "streamz_kafka/watcher/watcher.py.jinja",
+            "description": "消费者对象的代理",
+            "default_path": "{{ project_name }}/watcher.py"
+        },
+        "streamz_kafka_watcher_handdler": {
+            "source": "streamz_kafka/watcher/handdler.py.jinja",
+            "description": "消息的处理函数",
+            "default_path": "{{ project_name }}/handdler.py"
+        },
+        "confluent_kafka_sender_app": {
+            "source": "kafka/sender/confluent_kafka/app.py.jinja",
+            "description": "发送端应用主体",
+            "default_path": "{{ project_name }}_sender/app.py"
+        },
+        "confluent_kafka_sender": {
+            "source": "kafka/sender/confluent_kafka/sender.py.jinja",
+            "description": "生产者对象的代理",
+            "default_path": "{{ project_name }}_sender/sender.py"
+        },
+        "dockerfile": {
+            "source": "dockerfile.jinja",
+            "description": "用于打包镜像的dockerfile文件",
+            "default_path": "dockerfile"
+        },
+        "dockercompose": {
+            "source": "cp_dockercompose@v0.0.2//kafka_broker_standalone",
+            "description": "用于测试程序的docker-compose文件",
+            "default_path": "docker-compose.yml"
+        },
+        "main": {
+            "source": "__main__.py.jinja",
+            "description": "应用入口",
+            "default_path": "{{ project_name }}/__main__.py"
+        }
+    }
+}

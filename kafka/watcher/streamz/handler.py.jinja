@@ -1,0 +1,5 @@
+from kafka.protocol.message import Message
+from pyloggerhelper import log
+
+def handdler(msg: Message) -> None:
+    log.info("get msg",msg=msg)
