@@ -1,3 +1,3 @@
-# tp_py_watcher
+# tp_py_watcher-fs
 
-python监听器相关模板和组件
+python监听文件系统的项目模板
