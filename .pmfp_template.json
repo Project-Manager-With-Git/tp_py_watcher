@@ -34,7 +34,7 @@
             "default_path": "{{ project_name }}/app.py"
         },
         "eventfs_watcher_event_handdler": {
-            "source": "eventfs/watcher/event_handdler.py.jinja",
+            "source": "eventfs/watcher/event_handler.py.jinja",
             "description": "watchdog的使用模板,可以单独使用",
             "default_path": "{{ project_name }}/event_handdler.py"
         },
@@ -71,7 +71,7 @@
         "aio_kafka_watcher_handdler": {
             "source": "kafka/watcher/aio/handdler.py.jinja",
             "description": "kafka的异步消息的处理函数",
-            "default_path": "{{ project_name }}/handdler.py"
+            "default_path": "{{ project_name }}/handler.py"
         },
         "streamz_kafka_watcher_app": {
             "source": "kafka/watcher/streamz/app.py.jinja",
@@ -86,7 +86,7 @@
         "streamz_kafka_watcher_handdler": {
             "source": "kafka/watcher/streamz/handdler.py.jinja",
             "description": "使用streamz处理kafka消息的处理函数",
-            "default_path": "{{ project_name }}/handdler.py"
+            "default_path": "{{ project_name }}/handler.py"
         },
         "sync_kafka_watcher_app": {
             "source": "kafka/watcher/sync/app.py.jinja",
@@ -101,7 +101,7 @@
         "sync_kafka_watcher_handdler": {
             "source": "kafka/watcher/sync/handdler.py.jinja",
             "description": "kafka的同步消息的处理函数",
-            "default_path": "{{ project_name }}/handdler.py"
+            "default_path": "{{ project_name }}/handler.py"
         },
         "aio_kafka_sender_app": {
             "source": "kafka/sender/aio/app.py.jinja",
