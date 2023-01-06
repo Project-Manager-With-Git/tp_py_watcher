@@ -58,37 +58,97 @@
             "description": "发送端应用主体",
             "default_path": "{{ project_name }}_sender/sender.py"
         },
+        "aio_kafka_watcher_app": {
+            "source": "kafka/watcher/aio/app.py.jinja",
+            "description": "kafka的异步监听应用主体",
+            "default_path": "{{ project_name }}/app.py"
+        },
+        "aio_kafka_watcher": {
+            "source": "kafka/watcher/aio/watcher.py.jinja",
+            "description": "kafka的异步消费者对象的代理",
+            "default_path": "{{ project_name }}/watcher.py"
+        },
+        "aio_kafka_watcher_handdler": {
+            "source": "kafka/watcher/aio/handdler.py.jinja",
+            "description": "kafka的异步消息的处理函数",
+            "default_path": "{{ project_name }}/handdler.py"
+        },
         "streamz_kafka_watcher_app": {
-            "source": "streamz_kafka/watcher/app.py.jinja",
-            "description": "监听应用主体",
+            "source": "kafka/watcher/streamz/app.py.jinja",
+            "description": "使用streamz处理kafka消息的监听应用主体",
             "default_path": "{{ project_name }}/app.py"
         },
         "streamz_kafka_watcher": {
-            "source": "streamz_kafka/watcher/watcher.py.jinja",
-            "description": "消费者对象的代理",
+            "source": "kafka/watcher/streamz/watcher.py.jinja",
+            "description": "使用streamz处理kafka消息的消费者对象的代理",
             "default_path": "{{ project_name }}/watcher.py"
         },
         "streamz_kafka_watcher_handdler": {
-            "source": "streamz_kafka/watcher/handdler.py.jinja",
-            "description": "消息的处理函数",
+            "source": "kafka/watcher/streamz/handdler.py.jinja",
+            "description": "使用streamz处理kafka消息的处理函数",
             "default_path": "{{ project_name }}/handdler.py"
         },
+        "sync_kafka_watcher_app": {
+            "source": "kafka/watcher/sync/app.py.jinja",
+            "description": "kafka的同步消息监听应用主体",
+            "default_path": "{{ project_name }}/app.py"
+        },
+        "sync_kafka_watcher": {
+            "source": "kafka/watcher/sync/watcher.py.jinja",
+            "description": "kafka的同步消费者对象的代理",
+            "default_path": "{{ project_name }}/watcher.py"
+        },
+        "sync_kafka_watcher_handdler": {
+            "source": "kafka/watcher/sync/handdler.py.jinja",
+            "description": "kafka的同步消息的处理函数",
+            "default_path": "{{ project_name }}/handdler.py"
+        },
+        "aio_kafka_sender_app": {
+            "source": "kafka/sender/aio/app.py.jinja",
+            "description": "kafka的异步发送端应用主体",
+            "default_path": "{{ project_name }}_sender/app.py"
+        },
+        "aio_kafka_sender": {
+            "source": "kafka/sender/aio/sender.py.jinja",
+            "description": "kafka的异步生产者对象的代理",
+            "default_path": "{{ project_name }}_sender/sender.py"
+        },
         "confluent_kafka_sender_app": {
-            "source": "kafka/sender/confluent_kafka/app.py.jinja",
-            "description": "发送端应用主体",
+            "source": "kafka/sender/confluent/app.py.jinja",
+            "description": "使用confluent_kafka的发送端应用主体",
             "default_path": "{{ project_name }}_sender/app.py"
         },
         "confluent_kafka_sender": {
-            "source": "kafka/sender/confluent_kafka/sender.py.jinja",
-            "description": "生产者对象的代理",
+            "source": "kafka/sender/confluent/sender.py.jinja",
+            "description": "使用confluent_kafka的生产者对象的代理",
             "default_path": "{{ project_name }}_sender/sender.py"
         },
-        "dockerfile": {
-            "source": "dockerfile.jinja",
-            "description": "用于打包镜像的dockerfile文件",
+        "sync_kafka_sender_app": {
+            "source": "kafka/sender/sync/app.py.jinja",
+            "description": "kafka的同步发送端应用主体",
+            "default_path": "{{ project_name }}_sender/app.py"
+        },
+        "sync_kafka_sender": {
+            "source": "kafka/sender/sync/sender.py.jinja",
+            "description": "kafka的同步生产者对象的代理",
+            "default_path": "{{ project_name }}_sender/sender.py"
+        },
+        "etcd_dockerfile": {
+            "source": "etcd3/dockerfile.jinja",
+            "description": "用于打包etcd监听器镜像的dockerfile文件",
             "default_path": "dockerfile"
         },
-        "dockercompose": {
+        "etcd_dockercompose": {
+            "source": "cp_dockercompose@v0.0.2//kafka_broker_standalone",
+            "description": "用于测试程序的docker-compose文件",
+            "default_path": "docker-compose.yml"
+        },
+        "kafka_dockerfile": {
+            "source": "kafka/dockerfile.jinja",
+            "description": "用于打包kafka监听器镜像的dockerfile文件",
+            "default_path": "dockerfile"
+        },
+        "kafka_dockercompose": {
             "source": "cp_dockercompose@v0.0.2//kafka_broker_standalone",
             "description": "用于测试程序的docker-compose文件",
             "default_path": "docker-compose.yml"
