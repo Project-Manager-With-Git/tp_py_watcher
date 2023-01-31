@@ -38,6 +38,11 @@
             "description": "watchdog的使用模板,可以单独使用",
             "default_path": "{{ project_name }}/event_handdler.py"
         },
+        "eventfs_docker_compose": {
+            "source": "eventfs/docker-compose.yml.jinja",
+            "description": "watchdogcdedocker-compose模板",
+            "default_path": "{{ project_name }}/event_handdler.py"
+        },
         "etcd_watcher_app": {
             "source": "etcd3/watcher/app.py.jinja",
             "description": "监听应用主体",
