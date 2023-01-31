@@ -23,15 +23,20 @@
         }
     },
     "components": {
-        "eventfs_watcher_app": {
-            "source": "tp_py_watcher@dev//eventfs_watcher_app",
-            "description": "用于构造文件系统监听器的应用的文件",
+        "watcher_app": {
+            "source": "watcher/app.py.jinja",
+            "description": "用于构造监听器应用的文件",
             "default_path": "{{ project_name }}/app.py"
         },
-        "eventfs_watcher_event_handdler": {
-            "source": "tp_py_watcher@dev//eventfs_watcher_event_handdler",
+        "watcher_event_handdler": {
+            "source": "watcher/event_handler.py.jinja",
             "description": "watchdog的使用模板,可以单独使用",
             "default_path": "{{ project_name }}/event_handdler.py"
+        },
+        "docker_compose": {
+            "source": "docker-compose.yml.jinja",
+            "description": "watchdog的docker-compose模板,用于调试",
+            "default_path": "{{ project_name }}/docker-compose.yml"
         },
         "main": {
             "source": "tp_py_watcher@dev//main",
