@@ -33,7 +33,7 @@ class EventHanddler(FileSystemEventHandler):
                     log.info("get file modified", p=event.src_path, content=content)
 
 
-def watch(watch_path: str) ->None:
+def watch(watch_path: str) -> None:
     observer = Observer()
     handler = EventHanddler()
     observer.schedule(handler, watch_path, recursive=True)
