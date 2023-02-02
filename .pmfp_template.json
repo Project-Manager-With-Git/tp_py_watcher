@@ -7,7 +7,7 @@
         "pyproxypattern >= 0.0.1",
         "schema_entry >= 0.1.5",
         "pyloggerhelper >= 0.0.3",
-        "watchdog >= 2.2.1"
+        "etcdproxy >= 0.0.2"
     ],
     "test_requires": [
         "coverage >= 5.5",
