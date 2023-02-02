@@ -31,7 +31,7 @@
         "watcher_handdler": {
             "source": "watcher/handler.py.jinja",
             "description": "watchdog的使用模板,可以单独使用",
-            "default_path": "{{ project_name }}/handdler.py"
+            "default_path": "{{ project_name }}/handler.py"
         },
         "watcher": {
             "source": "watcher/watcher.py.jinja",

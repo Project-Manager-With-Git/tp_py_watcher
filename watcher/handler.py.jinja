@@ -1,9 +1,5 @@
-import os
-import time
 from hashlib import md5
-from typing import Dict, Any, Union
-from watchdog.observers import Observer
-# from watchdog.observers.polling import PollingObserver as Observer # 如果在docker中部署可以用PollingObserver
+from typing import Dict, Union
 from watchdog.events import FileSystemEventHandler, DirModifiedEvent, FileModifiedEvent
 from pyloggerhelper import log
 

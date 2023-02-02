@@ -1,15 +1,12 @@
 import os
 import time
-from hashlib import md5
-from typing import Dict, Any, Union
 from watchdog.observers import Observer
-# from watchdog.observers.polling import PollingObserver as Observer # 如果在docker中部署可以用PollingObserver
-from watchdog.events import FileSystemEventHandler, DirModifiedEvent, FileModifiedEvent
+from watchdog.observers.polling import PollingObserver
 from pyloggerhelper import log
 from handler import EventHanddler
 
 
-def watch(watch_path: str) -> None:
+def watch(watch_path: str, *, in_docker: bool = False) -> None:
     """监控文件系统的函数.
 
     可以直接作为监控程序使用,注意需要先初始化log.

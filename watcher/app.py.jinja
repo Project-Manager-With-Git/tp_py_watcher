@@ -33,6 +33,11 @@ class Application(EntryPoint):
                 "type": "string",
                 "description": "监听的目标路径",
                 "default": "./data"
+            },
+            "in_docker": {
+                "type": "boolean",
+                "description": "监控程序是否运行于docker中",
+                "default": False
             }
         }
     }
@@ -43,4 +48,4 @@ class Application(EntryPoint):
             log_level=self.config.get("log_level")
         )
         log.info("获取任务配置", config=self.config)
-        watch(self.config["watch_path"])
+        watch(self.config["watch_path"], in_docker=self.config["in_docker"])
