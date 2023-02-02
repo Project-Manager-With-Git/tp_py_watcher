@@ -28,10 +28,15 @@
             "description": "用于构造监听器应用的文件",
             "default_path": "{{ project_name }}/app.py"
         },
-        "watcher_event_handdler": {
-            "source": "watcher/event_handler.py.jinja",
+        "watcher_handdler": {
+            "source": "watcher/handler.py.jinja",
             "description": "watchdog的使用模板,可以单独使用",
-            "default_path": "{{ project_name }}/event_handdler.py"
+            "default_path": "{{ project_name }}/handdler.py"
+        },
+        "watcher": {
+            "source": "watcher/watcher.py.jinja",
+            "description": "watchdog的监听函数模版,可以单独使用",
+            "default_path": "{{ project_name }}/watcher.py"
         },
         "main": {
             "source": "__main__.py.jinja",
