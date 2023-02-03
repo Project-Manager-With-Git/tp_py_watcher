@@ -33,11 +33,6 @@
             "description": "etcd事件处理的使用模板,可以单独使用",
             "default_path": "{{ project_name }}/handler.py"
         },
-        "watcher": {
-            "source": "watcher/watcher.py.jinja",
-            "description": "etcd的监听函数模版,可以单独使用",
-            "default_path": "{{ project_name }}/watcher.py"
-        },
         "main": {
             "source": "__main__.py.jinja",
             "description": "应用入口",
@@ -51,7 +46,7 @@
         "docker_compose": {
             "source": "docker-compose.yml.jinja",
             "description": "watchdog的docker-compose模板,用于调试",
-            "default_path": "{{ project_name }}/docker-compose.yml"
+            "default_path": "docker-compose.yml"
         }
     }
 }

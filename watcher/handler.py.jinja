@@ -1,10 +1,13 @@
-from typing import Iterator, AsyncIterator
+import asyncio
+from etcdproxy import EtcdProxy, etcdurl_parser
 from pyloggerhelper import log
+from typing import Iterator, AsyncIterator, Any, cast
+
+etcd = EtcdProxy()
 
 
-def handdler(events_iterator: Iterator) -> None:
-    """
-    """
+def handler(events_iterator: Iterator[Any]) -> None:
+    """同步监听程序需要实现的事件监听函数."""
     from etcd3.events import PutEvent, DeleteEvent
     for event in events_iterator:
         try:
@@ -20,17 +23,101 @@ def handdler(events_iterator: Iterator) -> None:
             log.error("event watch error", e=e)
 
 
-async def aiohanddler(events_iterator: AsyncIterator) -> None:
-    from aetcd3.events import PutEvent, DeleteEvent
-    async for event in events_iterator:
+async def aiohandler(events_iterator: AsyncIterator[Any]) -> None:
+    """异步监听程序需要实现的事件监听函数."""
+    from aetcd.rtypes import Event, EventKind
+    async for evt in events_iterator:
+        event = cast(Event, evt)
         try:
-            if isinstance(event, PutEvent):
-                key = event.key.decode("utf-8")
-                value = event._event.kv.value.decode("utf-8")
+            if event.kind == EventKind.PUT:
+                key = event.kv.key.decode("utf-8")
+                value = event.kv.value.decode("utf-8")
                 log.info("get put event", key=key, value=value)
 
-            elif isinstance(event, DeleteEvent):
-                key = event.key.decode("utf-8")
+            elif event.kind == EventKind.DELETE:
+                key = event.kv.key.decode("utf-8")
                 log.info("get delete event", key=key)
         except Exception as e:
             log.error("event watch error", e=e)
+
+
+def run_handdler(watch_etcd_prefix: bool, watch_etcd_key: str) -> None:
+    """同步处理函数的调用函数."""
+    import etcd3
+    etcdclient = cast(etcd3.Etcd3Client, etcd)
+    if watch_etcd_prefix:
+        events_iterator, cancel = etcdclient.watch_prefix(watch_etcd_key.encode("utf-8"))
+    else:
+        events_iterator, cancel = etcdclient.watch(watch_etcd_key.encode("utf-8"))
+    try:
+        handler(events_iterator)
+    except (KeyboardInterrupt, SystemExit):
+        log.info('etcd watcher stoping')
+    except Exception as e:
+        log.error("etcd watcher get error", err=type(e), err_msg=str(e), exc_info=True, stack_info=True)
+    finally:
+        cancel()
+        etcd.close()
+        log.info('etcd watcher stoped')
+
+
+async def wait_seconds(seconds: int = 3) -> None:
+    for i in range(seconds):
+        left = seconds - i
+        log.info(f"etcd watcher will stop after {left} seconds")
+        await asyncio.sleep(1)
+
+
+async def run_aiohanddler(watch_etcd_prefix: bool, watch_etcd_key: str) -> None:
+    """异步处理函数的调用函数."""
+    import aetcd
+    etcdclient = cast(aetcd.Client, etcd)
+    if watch_etcd_prefix:
+        events_iterator = await etcdclient.watch_prefix(watch_etcd_key.encode("utf-8"))
+    else:
+        events_iterator = await etcdclient.watch(watch_etcd_key.encode("utf-8"))
+    try:
+        await aiohandler(events_iterator)
+    except asyncio.CancelledError:
+        log.info("etcd watcher stop watching")
+    except Exception as e:
+        log.error("etcd watcher get error", err=type(e), err_msg=str(e), exc_info=True, stack_info=True)
+    finally:
+        log.info("etcd watcher's connenction is closing.")
+        await events_iterator.cancel()
+        await etcd.close()
+        log.info("etcd watcher's connenction closed")
+
+
+def watch(watch_etcd_url: str, *, use_uvloop: bool = False) -> None:
+    """监听入口函数.
+
+    可以在作为模块时单独使用.
+    """
+    urlinfo = etcdurl_parser(watch_etcd_url)
+    print(urlinfo)
+    watch_etcd_key = urlinfo["key"]
+    watch_etcd_prefix = urlinfo["is_prefix"] if urlinfo.get("is_prefix") else False
+    etcd.initialize_from_url(url=watch_etcd_url)
+    if use_uvloop:
+        import uvloop
+        # uvloop.install()
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        log.info('using uvloop')
+    if etcd.aio or use_uvloop:
+        loop = asyncio.get_event_loop()
+        try:
+            task = loop.create_task(run_aiohanddler(watch_etcd_prefix, watch_etcd_key))
+            loop.run_until_complete(task)
+        except (KeyboardInterrupt, SystemExit):
+            log.info('etcd watcher stoping')
+        except Exception as e:
+            raise e
+        finally:
+            task.cancel()
+            loop.run_until_complete(wait_seconds())
+            loop.run_until_complete(loop.shutdown_asyncgens())
+            loop.stop()
+            log.info('etcd watcher stoped')
+    else:
+        run_handdler(watch_etcd_prefix, watch_etcd_key)
