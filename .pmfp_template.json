@@ -33,11 +33,6 @@
             "description": "watchdog的使用模板,可以单独使用",
             "default_path": "{{ project_name }}/handler.py"
         },
-        "watcher": {
-            "source": "watcher/watcher.py.jinja",
-            "description": "watchdog的监听函数模版,可以单独使用",
-            "default_path": "{{ project_name }}/watcher.py"
-        },
         "main": {
             "source": "__main__.py.jinja",
             "description": "应用入口",
