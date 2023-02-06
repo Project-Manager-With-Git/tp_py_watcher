@@ -98,13 +98,19 @@ def watch(watch_etcd_url: str, *, use_uvloop: bool = False) -> None:
     print(urlinfo)
     watch_etcd_key = urlinfo["key"]
     watch_etcd_prefix = urlinfo["is_prefix"] if urlinfo.get("is_prefix") else False
-    etcd.initialize_from_url(url=watch_etcd_url)
+    conn_params = urlinfo["conn_params"]
+    aio = urlinfo["aio"]
     if use_uvloop:
         import uvloop
         # uvloop.install()
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-        log.info('using uvloop')
-    if etcd.aio or use_uvloop:
+        aio = True
+        log.info('etcd watcher using uvloop')
+
+    etcd.initialize_from_params(conn_params, aio=aio)
+    log.info("etcd watcher start watching", key=watch_etcd_key, is_prefix=watch_etcd_prefix)
+    if etcd.aio:
+
         loop = asyncio.get_event_loop()
         try:
             task = loop.create_task(run_aiohanddler(watch_etcd_prefix, watch_etcd_key))
