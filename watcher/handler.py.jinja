@@ -11,7 +11,14 @@ from typing import Dict, Union
 class EventHanddler(FileSystemEventHandler):
     """事件处理回调.
 
-    需要实现的部分
+    需要实现的部分.
+    可以重载如下方法:
+    + `on_any_event(event: FileSystemEvent)->None`,只要有事件就触发
+    + `on_closed(event:FileClosedEvent)->None`,打开的文件被关闭就会触发
+    + `on_created(event: DirCreatedEvent | FileCreatedEvent)->None`文件或文件夹被创建就会触发
+    + `on_deleted(event: DirDeletedEvent | FileDeletedEvent)->None`文件或文件夹被删除就会触发
+    + `on_modified(event: DirModifiedEvent | FileModifiedEvent)->None`文件或文件夹被修改就会触发
+    + `on_moved(event: DirMovedEvent | FileMovedEvent)->None`文件或文件夹被移动就会触发
     """
     latest: Dict[str, bytes]
 
